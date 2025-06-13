@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://omfsmuww2qiq"]
+
+[ext_resource type="Script" uid="uid://20lwqdudytne" path="res://Entities/Actors/Components/MeleeAttack/Node/melee_attack_component.gd" id="1_p5t3o"]
+[ext_resource type="Texture2D" uid="uid://cf7skxh5b41po" path="res://Entities/Actors/Components/MeleeAttack/Punch/Sprite/punch.png" id="2_2h151"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fk4o1"]
+size = Vector2(8, 8)
+
+[node name="MeleeAttackComponent" type="Node2D"]
+script = ExtResource("1_p5t3o")
+
+[node name="Punch" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Punch"]
+texture = ExtResource("2_2h151")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Punch"]
+shape = SubResource("RectangleShape2D_fk4o1")
+
+[connection signal="body_entered" from="Punch" to="." method="_on_body_entered_punch_area"]
