@@ -2,6 +2,7 @@ class_name PlayerControl extends Node2D
 
 # Variables
 @export var _player_body: CharacterBody2D
+@export var _knockback_component: KnockbackComponent
 @export_group("Player Movement")
 @export var _init_player_speed: float = 500.0
 @export var _speed_multiplier: float = 35.0
@@ -21,14 +22,21 @@ func _input(event: InputEvent) -> void:
 		if _melee_attack_component:
 			_melee_attack_component._attack(_direction)
 		else:
-			push_error("_melee_attack_component is not initialized in player control. Cannot attack.")
+			push_error("PlayerControl: _melee_attack_component is not initialized in player control. cannot attack.")
 
 func _physics_process(delta: float) -> void:
 	_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	if not _player_body:
-		push_error("_player_body is not initialized in player control. Cannot move.")
+		push_error("PlayerControl: _player_body is not initialized. cannot move.")
 		return
+	
+	if _knockback_component:
+		if _knockback_component.is_knockbacking():
+			return
+	else:
+		push_warning("PlayerControl: _knockback_component is not initialized. cannot check if player is being knockbacked.")
 	
 	_player_body.velocity = _player_speed * _speed_multiplier * _direction * delta
 	_player_body.move_and_slide()
+	

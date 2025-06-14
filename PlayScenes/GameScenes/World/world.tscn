@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://be4x6gsh2wcnl"]
+[gd_scene load_steps=3 format=3 uid="uid://be4x6gsh2wcnl"]
 
 [ext_resource type="PackedScene" uid="uid://bhqhk3jr1mjdn" path="res://Entities/Actors/Player/Node/player.tscn" id="1_o7agh"]
+[ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="2_hpk4a"]
 
 [node name="World" type="Node2D"]
 
@@ -10,4 +11,12 @@
 
 [node name="Player" parent="Actors/Player" instance=ExtResource("1_o7agh")]
 position = Vector2(620, 389)
+scale = Vector2(2, 2)
+
+[node name="Enemies" type="Node2D" parent="Actors"]
+
+[node name="BasicRobots" type="Node2D" parent="Actors/Enemies"]
+
+[node name="BasicRobot" parent="Actors/Enemies/BasicRobots" instance=ExtResource("2_hpk4a")]
+position = Vector2(516, 277)
 scale = Vector2(2, 2)

@@ -1,29 +1,38 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhqhk3jr1mjdn"]
+[gd_scene load_steps=10 format=3 uid="uid://bhqhk3jr1mjdn"]
 
+[ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://Entities/Actors/Components/components_container.gd" id="1_hk33a"]
 [ext_resource type="Texture2D" uid="uid://cleg2vhccvc8f" path="res://Entities/Actors/Player/Sprites/rectee.png" id="1_orhga"]
 [ext_resource type="Script" uid="uid://d2h0bpijn86qk" path="res://Entities/Actors/Player/Components/PlayerControl/player_control.gd" id="2_itdti"]
 [ext_resource type="PackedScene" uid="uid://b24h3y7m0oyhb" path="res://Entities/Actors/Components/Health/health_component.tscn" id="3_iw4oh"]
 [ext_resource type="PackedScene" uid="uid://omfsmuww2qiq" path="res://Entities/Actors/Components/MeleeAttack/Node/melee_attack_component.tscn" id="3_vut02"]
 [ext_resource type="PackedScene" uid="uid://cumtl0tnx270k" path="res://Entities/Actors/HUDs/HealthDisplay/health_display.tscn" id="5_fk4o1"]
+[ext_resource type="PackedScene" uid="uid://cfomss1rirx5h" path="res://Entities/Actors/Components/Knockback/knockback_component.tscn" id="5_mbxmi"]
 [ext_resource type="AudioStream" uid="uid://pecn5u2br0fr" path="res://Entities/Actors/Player/SFXs/PlayerDamaged/rectee_damaged.wav" id="5_vut02"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_itdti"]
 size = Vector2(16, 32)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 
-[node name="Components" type="Node2D" parent="."]
+[node name="ComponentsContainer" type="Node2D" parent="." groups=["components_container"]]
+script = ExtResource("1_hk33a")
 
-[node name="PlayerControl" type="Node2D" parent="Components" node_paths=PackedStringArray("_player_body", "_melee_attack_component")]
+[node name="PlayerControl" type="Node2D" parent="ComponentsContainer" node_paths=PackedStringArray("_player_body", "_knockback_component", "_melee_attack_component")]
 script = ExtResource("2_itdti")
 _player_body = NodePath("../..")
+_knockback_component = NodePath("../KnockbackComponent")
 _melee_attack_component = NodePath("../MeleeAttackComponent")
 
-[node name="HealthComponent" parent="Components" node_paths=PackedStringArray("_attacked_audio_player") instance=ExtResource("3_iw4oh")]
+[node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player") instance=ExtResource("3_iw4oh")]
 _attacked_audio_player = NodePath("../../AudioPlayers/AttackedAudioPlayer")
 
-[node name="MeleeAttackComponent" parent="Components" instance=ExtResource("3_vut02")]
-target_groups = Array[String](["someone"])
+[node name="MeleeAttackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_component_container") instance=ExtResource("3_vut02")]
+_target_groups = Array[String](["robot"])
+_component_container = NodePath("..")
+
+[node name="KnockbackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_actor_body") instance=ExtResource("5_mbxmi")]
+_actor_body = NodePath("../..")
+_init_knockback_reduce = 0.25
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_orhga")
@@ -42,7 +51,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="HealthDisplay" parent="HUDs" node_paths=PackedStringArray("_health_component") instance=ExtResource("5_fk4o1")]
-_health_component = NodePath("../../Components/HealthComponent")
+_health_component = NodePath("../../ComponentsContainer/HealthComponent")
 
 [node name="AudioPlayers" type="Node2D" parent="."]
 

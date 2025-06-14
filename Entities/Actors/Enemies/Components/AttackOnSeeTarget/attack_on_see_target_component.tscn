@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1at5tnafygko"]
+
+[ext_resource type="Script" uid="uid://00w408652wac" path="res://Entities/Actors/Enemies/Components/AttackOnSeeTarget/attack_on_see_target_component.gd" id="1_7bri4"]
+
+[node name="AttackOnSeeTargetComponent" type="Node2D" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_melee_attack_component")]
+script = ExtResource("1_7bri4")
+_actor_body = NodePath("")
+_target_group = "player"
+_multiple_rays = NodePath("")
+_melee_attack_component = NodePath("")
