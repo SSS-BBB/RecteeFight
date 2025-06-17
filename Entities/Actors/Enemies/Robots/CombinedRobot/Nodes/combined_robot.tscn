@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://dqvdtncllbs6a"]
+
+[ext_resource type="PackedScene" uid="uid://clfctlkx1xmcm" path="res://Entities/Actors/Enemies/Robots/ShootingRobot/Nodes/shooting_robot.tscn" id="1_drswj"]
+[ext_resource type="PackedScene" uid="uid://cnu272dahaa5r" path="res://Entities/Actors/Enemies/Robots/CombinedRobot/Components/TeleportOnShootComponent/teleport_on_shoot_component.tscn" id="2_8ocxk"]
+[ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="2_qhoxs"]
+[ext_resource type="AudioStream" uid="uid://dqggko7g4vo4u" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/SFXs/robot_teleport.wav" id="4_8ocxk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ocxk"]
+resource_local_to_scene = true
+shader = ExtResource("2_qhoxs")
+shader_parameter/hit_flash_enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
+
+[node name="CombinedRobot" instance=ExtResource("1_drswj")]
+
+[node name="TeleportOnShootComponent" parent="ComponentsContainer" index="6" node_paths=PackedStringArray("_actor_body", "_robot_shooting_component", "_teleport_audio_player") instance=ExtResource("2_8ocxk")]
+_actor_body = NodePath("../..")
+_robot_shooting_component = NodePath("../RobotShootingComponent")
+_teleport_audio_player = NodePath("../../AudioPlayers/TeleportAudioPlayer")
+_teleport_radius_range_radius = 100.0
+
+[node name="Sprite2D" parent="." index="1"]
+material = SubResource("ShaderMaterial_8ocxk")
+region_rect = Rect2(96, 0, 16, 48)
+
+[node name="TeleportAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers" index="2"]
+stream = ExtResource("4_8ocxk")

@@ -39,5 +39,8 @@ _teleport_time_range_radius = 1.0
 material = SubResource("ShaderMaterial_f38qy")
 region_rect = Rect2(32, 0, 16, 48)
 
+[node name="MultipleRays" parent="." index="3"]
+more_rays = false
+
 [node name="TeleportAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers" index="1"]
 stream = ExtResource("4_avx2x")

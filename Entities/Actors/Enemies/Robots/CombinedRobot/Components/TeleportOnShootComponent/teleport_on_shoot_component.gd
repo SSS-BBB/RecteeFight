@@ -1,62 +1,61 @@
-class_name RobotTeleportComponent extends Node2D
+class_name TeleportOnShootComponent extends Node2D
 
-@onready var _timer: Timer = %Timer
 @onready var _check_intersect_area: Area2D = %CheckIntersectArea
 
 @export var _actor_body: PhysicsBody2D
-@export var _multiple_rays: MultipleRays
+@export var _robot_shooting_component: RobotShootingComponent
 @export var _teleport_audio_player: AudioStreamPlayer2D
 @export var _wave_dependent: bool = false
 @export_group("Teleportation Properties")
 @export var _init_teleport_radius: float = 300.0
-@export var _init_teleport_time: float = 2.5
+@export var _pause_time_before_teleport: float = 0.4
 @export var _teleport_radius_range_radius: float = 0.0
-@export var _teleport_time_range_radius: float = 0.0
 
 var _teleporting: bool
 var _teleport_radius: float
 
 func _ready() -> void:
 	if _wave_dependent:
-		pass
+		_teleport_radius = _init_teleport_radius
+	else:
+		_teleport_radius = _init_teleport_radius
 	
+	_teleport_radius = GameManager.randf_radius(_teleport_radius, _teleport_radius_range_radius, 100.0)
 	_teleporting = false
-	_teleport_radius = _init_teleport_radius
-	_teleport_radius = GameManager.randf_radius(_teleport_radius, _teleport_radius_range_radius, 50.0)
 	
-	if not _multiple_rays:
-		push_error("RobotTeleportComponent: _multiple_rays is not initialized. cannot teleport when sees player.")
+	if not _robot_shooting_component:
+		push_error("TeleportOnShootComponent: _robot_shooting_component is not initialized. cannot teleport actor when shot.")
 		return
 	
-	_multiple_rays.ray_hit_player.connect(_start_teleporting)
+	_robot_shooting_component.actor_shoot.connect(_teleport)
 
-func _start_teleporting(_player: Player) -> void:
+func _teleport() -> void:
+	if not _actor_body:
+		push_error("TeleportOnShootComponent: _actor_body is not inititalized. cannot teleport the actor.")
+		return
+	
 	if _teleporting:
 		return
 	
 	_teleporting = true
-	var teleport_time: float = GameManager.randf_radius(_init_teleport_time, _teleport_time_range_radius)
-	_timer.wait_time = teleport_time
-	_timer.start()
-
-func _teleport() -> void:
-	
 	var rand_teleport: Vector2 = Vector2(randf_range(-_teleport_radius, _teleport_radius), randf_range(-_teleport_radius, _teleport_radius))
 	var rand_position: Vector2 = _actor_body.global_position + rand_teleport
 	rand_position = _get_non_overlap_position(rand_position)
 	
 	if rand_position == Vector2.ZERO:
-		push_warning("RobotTeleportComponent: cannot find position that is not overlapping with other bodies.")
+		push_warning("TeleportOnShootComponent: cannot find position that is not overlapping with other bodies.")
 		_teleporting = false
 		return
+	
+	await get_tree().create_timer(_pause_time_before_teleport).timeout
+	
+	_actor_body.global_position = rand_position
+	_check_intersect_area.global_position = _actor_body.global_position
 	
 	if _teleport_audio_player:
 		_teleport_audio_player.play()
 	else:
-		push_warning("RobotTeleportComponent: _teleport_audio_player is not initialized. cannot play teleporting audio")
-	
-	_actor_body.global_position = rand_position
-	_check_intersect_area.global_position = _actor_body.global_position
+		push_warning("TeleportOnShootComponent: _teleport_audio_player is not initialized. cannot play teleporting audio")
 	
 	_teleporting = false
 

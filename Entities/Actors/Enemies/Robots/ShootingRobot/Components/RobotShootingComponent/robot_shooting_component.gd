@@ -20,6 +20,8 @@ class_name RobotShootingComponent extends Node2D
 @export_group("Bullet Properties")
 @export var _bullet_scale: float = 1.5
 
+signal actor_shoot
+
 var _damage: int
 var _bullet_speed: float
 var _fire_rate: float
@@ -115,6 +117,7 @@ func _shoot() -> void:
 	else:
 		push_warning("RobotShootingComponent: _shooting_audio_player is not initialized. cannot play shooting audiod")
 	
+	actor_shoot.emit()
 	
 func is_shooting() -> bool:
 	return _shooting_time_left > 0.0

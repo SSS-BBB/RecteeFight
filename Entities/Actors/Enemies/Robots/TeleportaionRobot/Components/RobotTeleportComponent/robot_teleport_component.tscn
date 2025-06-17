@@ -6,11 +6,8 @@
 resource_local_to_scene = true
 size = Vector2(16, 48)
 
-[node name="RobotTeleportComponent" type="Node2D" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_teleport_audio_player")]
+[node name="RobotTeleportComponent" type="Node2D"]
 script = ExtResource("1_7xf2o")
-_actor_body = NodePath("")
-_multiple_rays = NodePath("")
-_teleport_audio_player = NodePath("")
 _wave_dependent = true
 
 [node name="Timer" type="Timer" parent="."]

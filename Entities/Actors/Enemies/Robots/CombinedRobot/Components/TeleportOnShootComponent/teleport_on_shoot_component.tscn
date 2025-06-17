@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnu272dahaa5r"]
+
+[ext_resource type="Script" uid="uid://3reictmpyomx" path="res://Entities/Actors/Enemies/Robots/CombinedRobot/Components/TeleportOnShootComponent/teleport_on_shoot_component.gd" id="1_nuh45"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhoxs"]
+size = Vector2(16, 48)
+
+[node name="TeleportOnShootComponent" type="Node2D" node_paths=PackedStringArray("_actor_body", "_robot_shooting_component", "_teleport_audio_player")]
+script = ExtResource("1_nuh45")
+_actor_body = NodePath("")
+_robot_shooting_component = NodePath("")
+_teleport_audio_player = NodePath("")
+_wave_dependent = true
+
+[node name="CheckIntersectArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckIntersectArea"]
+shape = SubResource("RectangleShape2D_qhoxs")
