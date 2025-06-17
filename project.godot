@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="uid://cxoxbx5cqjs70"
 
+[autoload]
+
+GameManager="*res://Utils/Globals/GameManager/game_manager.gd"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=2

@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bimcpnjtqdnbq"]
+[gd_scene load_steps=17 format=3 uid="uid://bimcpnjtqdnbq"]
 
 [ext_resource type="Texture2D" uid="uid://bl1b7mfhrro7f" path="res://Entities/Actors/Enemies/Robots/robots.png" id="1_32k2u"]
-[ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://Entities/Actors/Components/components_container.gd" id="2_5uy6p"]
+[ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="2_5uy6p"]
 [ext_resource type="PackedScene" uid="uid://b24h3y7m0oyhb" path="res://Entities/Actors/Components/Health/health_component.tscn" id="2_202fg"]
 [ext_resource type="AudioStream" uid="uid://d4fdlfdr8fs7m" path="res://Entities/Actors/Enemies/Robots/BasicRobot/SFXs/robot_damaged.wav" id="3_202fg"]
 [ext_resource type="PackedScene" uid="uid://cumtl0tnx270k" path="res://Entities/Actors/HUDs/HealthDisplay/health_display.tscn" id="3_l866c"]
@@ -10,26 +10,80 @@
 [ext_resource type="PackedScene" uid="uid://d1at5tnafygko" path="res://Entities/Actors/Enemies/Components/AttackOnSeeTarget/attack_on_see_target_component.tscn" id="5_b2y2e"]
 [ext_resource type="Script" uid="uid://beujq75q36xqx" path="res://Entities/Actors/Enemies/Robots/BasicRobot/MultipleRays/multiple_rays.gd" id="5_ipkk2"]
 [ext_resource type="Script" uid="uid://cgnonwhrv2h1p" path="res://Entities/Actors/Enemies/Components/MoveToTarget/move_to_target_component.gd" id="6_yl0rw"]
+[ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="7_l7spv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j4ywm"]
+shader = ExtResource("7_l7spv")
+shader_parameter/hit_flash_enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jy8ck"]
 size = Vector2(16, 48)
+
+[sub_resource type="Animation" id="Animation_j4ywm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:material:shader_parameter/hit_flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_l7spv"]
+resource_name = "hit_flash"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:material:shader_parameter/hit_flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j4ywm"]
+_data = {
+&"RESET": SubResource("Animation_j4ywm"),
+&"hit_flash": SubResource("Animation_l7spv")
+}
 
 [node name="BasicRobot" type="CharacterBody2D" groups=["robot"]]
 
 [node name="ComponentsContainer" type="Node2D" parent="." groups=["components_container"]]
 script = ExtResource("2_5uy6p")
 
-[node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player") instance=ExtResource("2_202fg")]
+[node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player", "_animation_on_attacked") instance=ExtResource("2_202fg")]
 _init_max_health = 5
 _attacked_audio_player = NodePath("../../AudioPlayers/AttackedAudioPlayer")
+_wave_dependent = true
+_max_health_range_radius = 3
+_animation_on_attacked = NodePath("../../AnimationPlayers/HitFlashAnimationPlayer")
+_attacked_animation_name = "hit_flash"
 
 [node name="KnockbackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_actor_body") instance=ExtResource("4_5uy6p")]
 _actor_body = NodePath("../..")
+_wave_dependent = true
 
 [node name="MeleeAttackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_component_container") instance=ExtResource("4_ch48g")]
 position = Vector2(0, 1)
 _target_groups = Array[String](["player"])
 _component_container = NodePath("..")
+_wave_dependent = true
+_init_attack_duration = 2.0
+_init_attack_distance = 30.0
+_attack_duration_range_radius = 0.5
+_attack_damage_range_radius = 2
+_attack_distance_range_radius = 5.0
 
 [node name="AttackOnSeeTargetComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_melee_attack_component") instance=ExtResource("5_b2y2e")]
 _actor_body = NodePath("../..")
@@ -41,9 +95,10 @@ script = ExtResource("6_yl0rw")
 _target_group_name = "player"
 _actor_body = NodePath("../..")
 _knockback_component = NodePath("../KnockbackComponent")
-_min_distance_to_target = 100.0
+_move_speed_range_radius = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_j4ywm")
 texture = ExtResource("1_32k2u")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 48)
@@ -54,18 +109,25 @@ shape = SubResource("RectangleShape2D_jy8ck")
 [node name="MultipleRays" type="Node2D" parent="."]
 script = ExtResource("5_ipkk2")
 
-[node name="AudioPlayers" type="Node2D" parent="."]
-
-[node name="AttackedAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers"]
-stream = ExtResource("3_202fg")
-
-[node name="Control" type="Control" parent="."]
+[node name="HUDs" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HealthDisplay" parent="Control" node_paths=PackedStringArray("_health_component") instance=ExtResource("3_l866c")]
+[node name="HealthDisplay" parent="HUDs" node_paths=PackedStringArray("_health_component") instance=ExtResource("3_l866c")]
 offset_top = -9.0
 offset_bottom = 31.0
 _health_component = NodePath("../../ComponentsContainer/HealthComponent")
+
+[node name="AudioPlayers" type="Node2D" parent="."]
+
+[node name="AttackedAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource("3_202fg")
+
+[node name="AnimationPlayers" type="Node" parent="."]
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="AnimationPlayers"]
+libraries = {
+&"": SubResource("AnimationLibrary_j4ywm")
+}

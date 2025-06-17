@@ -1,18 +1,63 @@
-[gd_scene load_steps=10 format=3 uid="uid://bhqhk3jr1mjdn"]
+[gd_scene load_steps=16 format=3 uid="uid://bhqhk3jr1mjdn"]
 
-[ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://Entities/Actors/Components/components_container.gd" id="1_hk33a"]
+[ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="1_hk33a"]
 [ext_resource type="Texture2D" uid="uid://cleg2vhccvc8f" path="res://Entities/Actors/Player/Sprites/rectee.png" id="1_orhga"]
+[ext_resource type="Script" uid="uid://mxos6jxaws7s" path="res://Entities/Actors/Player/Node/player.gd" id="1_v12bg"]
 [ext_resource type="Script" uid="uid://d2h0bpijn86qk" path="res://Entities/Actors/Player/Components/PlayerControl/player_control.gd" id="2_itdti"]
 [ext_resource type="PackedScene" uid="uid://b24h3y7m0oyhb" path="res://Entities/Actors/Components/Health/health_component.tscn" id="3_iw4oh"]
 [ext_resource type="PackedScene" uid="uid://omfsmuww2qiq" path="res://Entities/Actors/Components/MeleeAttack/Node/melee_attack_component.tscn" id="3_vut02"]
 [ext_resource type="PackedScene" uid="uid://cumtl0tnx270k" path="res://Entities/Actors/HUDs/HealthDisplay/health_display.tscn" id="5_fk4o1"]
 [ext_resource type="PackedScene" uid="uid://cfomss1rirx5h" path="res://Entities/Actors/Components/Knockback/knockback_component.tscn" id="5_mbxmi"]
 [ext_resource type="AudioStream" uid="uid://pecn5u2br0fr" path="res://Entities/Actors/Player/SFXs/PlayerDamaged/rectee_damaged.wav" id="5_vut02"]
+[ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="6_4c2vl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v12bg"]
+shader = ExtResource("6_4c2vl")
+shader_parameter/hit_flash_enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_itdti"]
 size = Vector2(16, 32)
 
+[sub_resource type="Animation" id="Animation_v12bg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:material:shader_parameter/hit_flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_4c2vl"]
+resource_name = "hit_flash"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:material:shader_parameter/hit_flash_enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v12bg"]
+_data = {
+&"RESET": SubResource("Animation_v12bg"),
+&"hit_flash": SubResource("Animation_4c2vl")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_v12bg")
 
 [node name="ComponentsContainer" type="Node2D" parent="." groups=["components_container"]]
 script = ExtResource("1_hk33a")
@@ -23,8 +68,11 @@ _player_body = NodePath("../..")
 _knockback_component = NodePath("../KnockbackComponent")
 _melee_attack_component = NodePath("../MeleeAttackComponent")
 
-[node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player") instance=ExtResource("3_iw4oh")]
+[node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player", "_animation_on_attacked") instance=ExtResource("3_iw4oh")]
+unique_name_in_owner = true
 _attacked_audio_player = NodePath("../../AudioPlayers/AttackedAudioPlayer")
+_animation_on_attacked = NodePath("../../AnimationPlayers/HitFlashAnimationPlayer")
+_attacked_animation_name = "hit_flash"
 
 [node name="MeleeAttackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_component_container") instance=ExtResource("3_vut02")]
 _target_groups = Array[String](["robot"])
@@ -35,14 +83,11 @@ _actor_body = NodePath("../..")
 _init_knockback_reduce = 0.25
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_v12bg")
 texture = ExtResource("1_orhga")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_itdti")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-enabled = false
-position_smoothing_enabled = true
 
 [node name="HUDs" type="Control" parent="."]
 layout_mode = 3
@@ -57,3 +102,10 @@ _health_component = NodePath("../../ComponentsContainer/HealthComponent")
 
 [node name="AttackedAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers"]
 stream = ExtResource("5_vut02")
+
+[node name="AnimationPlayers" type="Node" parent="."]
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="AnimationPlayers"]
+libraries = {
+&"": SubResource("AnimationLibrary_v12bg")
+}

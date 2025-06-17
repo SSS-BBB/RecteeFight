@@ -4,10 +4,14 @@ class_name MeleeAttackComponent extends Node2D
 @export var _disable: bool = false
 @export var _target_groups: Array[String] # groups to attack
 @export var _component_container: ComponentsContainer
+@export var _wave_dependent: bool = false # if wave dependent stats will change depends on the current wave
 @export_group("Attack Properties")
 @export var _init_attack_duration: float = 1.0
 @export var _init_attack_damage: int = 1
 @export var _init_attack_distance: float = 35.0
+@export var _attack_duration_range_radius: float = 0.0
+@export var _attack_damage_range_radius: int = 0
+@export var _attack_distance_range_radius: float = 0.0
 @export_group("Punch Properties")
 @export var _init_punch_scale: float = 1.0
 @export var _default_punch_direction: Vector2 = Vector2(1.0, 0.0) # punch direction when the actor is not moving.
@@ -32,9 +36,13 @@ var _puncing: bool
 
 # Functions
 func _ready() -> void:
-	_attack_duration = _init_attack_duration
-	_attack_damage = _init_attack_damage
-	_attack_distance = _init_attack_distance
+	if _wave_dependent:
+		# do something
+		pass
+	
+	_attack_duration = GameManager.randf_radius(_init_attack_duration, _attack_duration_range_radius) 
+	_attack_damage = GameManager.randi_radius(_init_attack_damage, _attack_damage_range_radius)
+	_attack_distance = GameManager.randf_radius(_init_attack_distance, _attack_distance_range_radius)
 	
 	_punch_scale = _init_punch_scale
 	_puncing = false

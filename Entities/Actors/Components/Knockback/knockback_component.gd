@@ -3,6 +3,7 @@ class_name KnockbackComponent extends Node2D
 # Variables
 @export var _actor_body: CharacterBody2D
 @export_range(0.0, 1.0, 0.01) var _init_knockback_reduce: float = 0.1
+@export var _wave_dependent: bool = false # if wave dependent stats will change depends on the current wave
 
 var _knockbacking: bool
 # knockback properties
@@ -14,8 +15,12 @@ var _knockback_reduce: float
 
 # Functions
 func _ready() -> void:
+	if _wave_dependent:
+		_knockback_reduce = _init_knockback_reduce
+	else:
+		_knockback_reduce = _init_knockback_reduce
+	
 	_knockbacking = false
-	_knockback_reduce = _init_knockback_reduce
 
 func _physics_process(delta: float) -> void:
 	if not _knockbacking:
