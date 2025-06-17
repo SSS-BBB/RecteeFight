@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://clfctlkx1xmcm"]
+
+[ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="1_4j8fu"]
+[ext_resource type="PackedScene" uid="uid://c5pchus23h2e6" path="res://Entities/Actors/Enemies/Robots/ShootingRobot/Components/RobotShootingComponent/robot_shooting_component.tscn" id="2_1elbi"]
+[ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="2_2rv0e"]
+[ext_resource type="AudioStream" uid="uid://bu8kkw8v2voyv" path="res://Entities/Actors/Enemies/Robots/ShootingRobot/SFXs/robot_shooting.wav" id="4_1elbi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1elbi"]
+resource_local_to_scene = true
+shader = ExtResource("2_2rv0e")
+shader_parameter/hit_flash_enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
+
+[node name="ShootingRobot" instance=ExtResource("1_4j8fu")]
+
+[node name="HealthComponent" parent="ComponentsContainer" index="0"]
+_init_max_health = 1
+_max_health_range_radius = 2
+
+[node name="MeleeAttackComponent" parent="ComponentsContainer" index="2"]
+_disable = true
+_wave_dependent = false
+
+[node name="MoveToTargetComponent" parent="ComponentsContainer" index="4" node_paths=PackedStringArray("_robot_shooting_component")]
+_robot_shooting_component = NodePath("../RobotShootingComponent")
+_init_move_speed = 35.0
+_move_speed_range_radius = 8.0
+
+[node name="RobotShootingComponent" parent="ComponentsContainer" index="5" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_shooting_audio_player") instance=ExtResource("2_1elbi")]
+_actor_body = NodePath("../..")
+_multiple_rays = NodePath("../../MultipleRays")
+_shooting_audio_player = NodePath("../../AudioPlayers/ShootingAudioPlayer")
+
+[node name="Sprite2D" parent="." index="1"]
+material = SubResource("ShaderMaterial_1elbi")
+region_rect = Rect2(64, 0, 16, 48)
+
+[node name="MultipleRays" parent="." index="3"]
+ray_size = 250.0
+more_rays = true
+
+[node name="ShootingAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers" index="1"]
+stream = ExtResource("4_1elbi")

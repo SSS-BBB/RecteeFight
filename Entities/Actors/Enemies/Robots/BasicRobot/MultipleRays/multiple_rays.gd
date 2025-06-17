@@ -10,6 +10,7 @@ class_name MultipleRays extends Node2D
 @export var ray_size: float = 50.0
 @export var ray_offset: Vector2 = Vector2.ZERO
 @export var horizontal_ray: int = -1 # -1 -> left, 1 -> right
+@export var more_rays: bool = false
 
 signal ray_hit_player(player: Player)
 
@@ -38,6 +39,12 @@ func add_multiple_rays() -> void:
 	add_up_and_down_ray(PI/4)
 	add_up_and_down_ray(PI/2)
 	add_up_and_down_ray(3*PI/4)
+	
+	if more_rays:
+		add_up_and_down_ray(PI/8)
+		add_up_and_down_ray(3*PI/8)
+		add_up_and_down_ray(5*PI/8)
+		add_up_and_down_ray(7*PI/8)
 	
 	add_ray(PI)
 

@@ -4,6 +4,7 @@ class_name MoveToTargetComponent extends Node2D
 @export var _target_group_name: String
 @export var _actor_body: CharacterBody2D
 @export var _knockback_component: KnockbackComponent
+@export var _robot_shooting_component: RobotShootingComponent
 @export var _wave_dependent: bool = false
 @export_group("Movement Properties")
 @export var _init_move_speed: float = 25.0
@@ -39,6 +40,9 @@ func _physics_process(_delta: float) -> void:
 			return
 	else:
 		push_warning("MoveToTargetComponent: _knockback_component is not initialized. cannot check if the actor is being knockbacked.")
+	
+	if _robot_shooting_component and _robot_shooting_component.is_shooting():
+		return
 	
 	var direction: Vector2 = _actor_body.global_position.direction_to(_target.global_position)
 	_actor_body.velocity = _move_speed * _speed_multiplier * direction

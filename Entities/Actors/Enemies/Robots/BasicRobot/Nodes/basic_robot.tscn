@@ -110,6 +110,7 @@ shape = SubResource("RectangleShape2D_jy8ck")
 
 [node name="MultipleRays" type="Node2D" parent="."]
 script = ExtResource("5_ipkk2")
+more_rays = null
 
 [node name="HUDs" type="Control" parent="."]
 layout_mode = 3

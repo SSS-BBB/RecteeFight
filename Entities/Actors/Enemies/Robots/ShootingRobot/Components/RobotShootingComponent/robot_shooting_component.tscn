@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5pchus23h2e6"]
+
+[ext_resource type="Script" uid="uid://o7vp4bkdlno4" path="res://Entities/Actors/Enemies/Robots/ShootingRobot/Components/RobotShootingComponent/robot_shooting_component.gd" id="1_4ahk2"]
+
+[node name="RobotShootingComponent" type="Node2D" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_shooting_audio_player")]
+script = ExtResource("1_4ahk2")
+_actor_body = NodePath("")
+_multiple_rays = NodePath("")
+_wave_dependent = true
+_shooting_audio_player = NodePath("")
+_bullet_scale = 1.2
