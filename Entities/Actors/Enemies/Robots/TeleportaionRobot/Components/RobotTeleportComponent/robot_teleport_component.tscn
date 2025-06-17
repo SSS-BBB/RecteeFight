@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnlmh1xu2pt48"]
+
+[ext_resource type="Script" uid="uid://vs5wn24m2r5p" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/Components/RobotTeleportComponent/robot_teleport_component.gd" id="1_7xf2o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_avx2x"]
+resource_local_to_scene = true
+size = Vector2(16, 48)
+
+[node name="RobotTeleportComponent" type="Node2D" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_teleport_audio_player")]
+script = ExtResource("1_7xf2o")
+_actor_body = NodePath("")
+_multiple_rays = NodePath("")
+_teleport_audio_player = NodePath("")
+_wave_dependent = true
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true
+
+[node name="CheckIntersectArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckIntersectArea"]
+shape = SubResource("RectangleShape2D_avx2x")
+
+[connection signal="timeout" from="Timer" to="." method="_teleport"]

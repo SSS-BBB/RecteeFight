@@ -12,6 +12,7 @@
 [ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="6_4c2vl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v12bg"]
+resource_local_to_scene = true
 shader = ExtResource("6_4c2vl")
 shader_parameter/hit_flash_enabled = false
 shader_parameter/hit_color = Color(1, 0, 0, 1)

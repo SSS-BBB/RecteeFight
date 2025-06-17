@@ -13,6 +13,7 @@
 [ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="7_l7spv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4ywm"]
+resource_local_to_scene = true
 shader = ExtResource("7_l7spv")
 shader_parameter/hit_flash_enabled = false
 shader_parameter/hit_color = Color(1, 0, 0, 1)
@@ -95,6 +96,7 @@ script = ExtResource("6_yl0rw")
 _target_group_name = "player"
 _actor_body = NodePath("../..")
 _knockback_component = NodePath("../KnockbackComponent")
+_wave_dependent = true
 _move_speed_range_radius = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

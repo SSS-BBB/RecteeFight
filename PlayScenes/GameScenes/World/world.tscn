@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://be4x6gsh2wcnl"]
 
 [ext_resource type="PackedScene" uid="uid://bhqhk3jr1mjdn" path="res://Entities/Actors/Player/Node/player.tscn" id="1_o7agh"]
-[ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="2_hpk4a"]
+[ext_resource type="PackedScene" uid="uid://du8q4v52bwyfl" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/Nodes/teleportation_robot.tscn" id="3_6dtal"]
 [ext_resource type="Script" uid="uid://bpb1y52dummp6" path="res://Utils/Cameras/Components/CameraShakingComponent/camera_shaking_component.gd" id="3_ggw3w"]
 [ext_resource type="Script" uid="uid://0cnspdflab0v" path="res://Utils/Cameras/GameCamera/game_camera.gd" id="3_xi0hx"]
 [ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="4_caqc3"]
@@ -20,8 +20,10 @@ scale = Vector2(2, 2)
 
 [node name="BasicRobots" type="Node2D" parent="Actors/Enemies"]
 
-[node name="BasicRobot" parent="Actors/Enemies/BasicRobots" instance=ExtResource("2_hpk4a")]
-position = Vector2(516, 277)
+[node name="TeleportationRobots" type="Node2D" parent="Actors/Enemies"]
+
+[node name="TeleportationRobot" parent="Actors/Enemies/TeleportationRobots" instance=ExtResource("3_6dtal")]
+position = Vector2(292, 356)
 scale = Vector2(2, 2)
 
 [node name="Cameras" type="Node2D" parent="."]

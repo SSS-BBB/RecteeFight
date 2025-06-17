@@ -11,6 +11,8 @@ class_name MultipleRays extends Node2D
 @export var ray_offset: Vector2 = Vector2.ZERO
 @export var horizontal_ray: int = -1 # -1 -> left, 1 -> right
 
+signal ray_hit_player(player: Player)
+
 # Game functions
 func _validate_property(property: Dictionary) -> void:
 	if (property.name == "ray_size" or property.name == "ray_offset") and not auto_ray_add:
@@ -19,6 +21,13 @@ func _validate_property(property: Dictionary) -> void:
 func _ready() -> void:
 	if auto_ray_add:
 		add_multiple_rays()
+
+func _physics_process(_delta: float) -> void:
+	var hit: Node2D = rays_target_collider("player")
+	if not hit:
+		return
+	var player: Player = hit as Player
+	ray_hit_player.emit(player)
 
 # Class functions
 func add_multiple_rays() -> void:

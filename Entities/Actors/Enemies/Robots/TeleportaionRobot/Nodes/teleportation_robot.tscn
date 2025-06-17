@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://du8q4v52bwyfl"]
+
+[ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="1_bpxhg"]
+[ext_resource type="PackedScene" uid="uid://dnlmh1xu2pt48" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/Components/RobotTeleportComponent/robot_teleport_component.tscn" id="2_avx2x"]
+[ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="2_ek0uh"]
+[ext_resource type="AudioStream" uid="uid://dqggko7g4vo4u" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/SFXs/robot_teleport.wav" id="4_avx2x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f38qy"]
+resource_local_to_scene = true
+shader = ExtResource("2_ek0uh")
+shader_parameter/hit_flash_enabled = false
+shader_parameter/hit_color = Color(1, 0, 0, 1)
+
+[node name="TeleportationRobot" instance=ExtResource("1_bpxhg")]
+
+[node name="HealthComponent" parent="ComponentsContainer" index="0"]
+_init_max_health = 3
+_max_health_range_radius = 2
+
+[node name="MeleeAttackComponent" parent="ComponentsContainer" index="2"]
+_init_attack_duration = 1.75
+_init_attack_damage = 2
+_init_attack_distance = 33.0
+_attack_damage_range_radius = 1
+_attack_distance_range_radius = 8.0
+
+[node name="MoveToTargetComponent" parent="ComponentsContainer" index="4"]
+_init_move_speed = 28.0
+_move_speed_range_radius = 7.0
+
+[node name="RobotTeleportComponent" parent="ComponentsContainer" index="5" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_teleport_audio_player") instance=ExtResource("2_avx2x")]
+_actor_body = NodePath("../..")
+_multiple_rays = NodePath("../../MultipleRays")
+_teleport_audio_player = NodePath("../../AudioPlayers/TeleportAudioPlayer")
+_teleport_radius_range_radius = 50.0
+_teleport_time_range_radius = 1.0
+
+[node name="Sprite2D" parent="." index="1"]
+material = SubResource("ShaderMaterial_f38qy")
+region_rect = Rect2(32, 0, 16, 48)
+
+[node name="TeleportAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers" index="1"]
+stream = ExtResource("4_avx2x")
