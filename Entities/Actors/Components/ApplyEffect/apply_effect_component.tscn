@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvvsubu5jc88s"]
+
+[ext_resource type="Script" uid="uid://1v78oygt6qpk" path="res://Entities/Actors/Components/ApplyEffect/apply_effect_component.gd" id="1_ysagh"]
+
+[node name="ApplyEffectComponent" type="Node2D" node_paths=PackedStringArray("_health_component", "_player_control", "_melee_attack_component")]
+script = ExtResource("1_ysagh")
+_health_component = NodePath("")
+_player_control = NodePath("")
+_melee_attack_component = NodePath("")

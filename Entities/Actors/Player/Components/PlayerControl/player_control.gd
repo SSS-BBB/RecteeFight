@@ -55,3 +55,10 @@ func _offscreen_movement() -> void:
 		_player_body.global_position.y += get_viewport().size.y
 	elif _player_body.global_position.y >= get_viewport().size.y:
 		_player_body.global_position.y -= get_viewport().size.y
+
+func upgrade_speed(value: float) -> bool:
+	_player_speed += value
+	return true
+
+func get_speed() -> float:
+	return _player_speed

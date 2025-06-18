@@ -20,6 +20,15 @@ func find_knockback_component(node: Node2D) -> KnockbackComponent:
 	
 	return null
 
+func find_apply_effect_component(node: Node2D) -> ApplyEffectComponent:
+	for child in node.get_children():
+		if child is ApplyEffectComponent:
+			return child
+		elif child.is_in_group("components_container"):
+			return find_apply_effect_component(child)
+	
+	return null
+
 # Random radius value
 func randi_radius(center: int, radius: int, minimum: int = 1) -> int:
 	if radius == 0:

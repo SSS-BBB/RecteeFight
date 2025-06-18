@@ -26,8 +26,8 @@ shader_parameter/hit_color = Color(1, 0, 0, 1)
 [node name="TeleportationRobot" instance=ExtResource("1_bpxhg")]
 
 [node name="HealthComponent" parent="ComponentsContainer" index="0"]
-_init_max_health = 3
-_max_health_range_radius = 2
+_init_max_health = 5
+_max_health_range_radius = 1
 
 [node name="MeleeAttackComponent" parent="ComponentsContainer" index="2"]
 _init_attack_duration = 1.75

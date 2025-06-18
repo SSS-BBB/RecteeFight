@@ -123,3 +123,18 @@ func _on_body_entered_punch_area(body: Node2D) -> void:
 		_tween.tween_callback(_finished_punching)
 		_tween.bind_node(self)
 		_tween.play()
+
+func upgrade_attack_speed(value: float) -> bool:
+	_attack_duration -= value
+	_attack_duration = max(0.01, _attack_duration)
+	return true
+
+func upgrade_damage(value: int) -> bool:
+	_attack_damage += value
+	return true
+
+func get_attack_duration() -> float:
+	return _attack_duration
+
+func get_attack_damage() -> int:
+	return _attack_damage

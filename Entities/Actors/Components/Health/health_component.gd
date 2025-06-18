@@ -82,16 +82,20 @@ func gain_health(health_gain: int) -> bool:
 	
 	return true
 
-func update_max_health(value: int, update_health: bool = true) -> void:
-	_max_health = value
+func update_max_health(value: int, update_health: bool = true) -> bool:
+	_max_health += value
 	if update_health:
 		_health = _max_health
 	
 	health_update.emit(_health)
+	return true
 
 func force_die() -> void:
 	_health = 0
 	actor_die.emit()
+
+func get_current_health() -> int:
+	return _health
 
 func get_max_health() -> int:
 	return _max_health

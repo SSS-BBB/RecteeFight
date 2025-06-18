@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bhqhk3jr1mjdn"]
+[gd_scene load_steps=19 format=3 uid="uid://bhqhk3jr1mjdn"]
 
 [ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="1_hk33a"]
 [ext_resource type="Texture2D" uid="uid://cleg2vhccvc8f" path="res://Entities/Actors/Player/Sprites/rectee.png" id="1_orhga"]
@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://cfomss1rirx5h" path="res://Entities/Actors/Components/Knockback/knockback_component.tscn" id="5_mbxmi"]
 [ext_resource type="AudioStream" uid="uid://pecn5u2br0fr" path="res://Entities/Actors/Player/SFXs/PlayerDamaged/rectee_damaged.wav" id="5_vut02"]
 [ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="6_4c2vl"]
+[ext_resource type="PackedScene" uid="uid://cvvsubu5jc88s" path="res://Entities/Actors/Components/ApplyEffect/apply_effect_component.tscn" id="7_fyk2m"]
+[ext_resource type="PackedScene" uid="uid://djeyfq48syq50" path="res://Entities/Actors/Player/Components/PlayerDebugComponent/player_debug_component.tscn" id="8_fyk2m"]
+[ext_resource type="AudioStream" uid="uid://b32i7bcq84v00" path="res://Entities/Actors/Player/SFXs/UpgradePickup/upgrade_pickup.wav" id="13_cfujg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v12bg"]
 resource_local_to_scene = true
@@ -83,6 +86,18 @@ _component_container = NodePath("..")
 _actor_body = NodePath("../..")
 _init_knockback_reduce = 0.25
 
+[node name="ApplyEffectComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_health_component", "_player_control", "_melee_attack_component", "_pick_up_audio_player") instance=ExtResource("7_fyk2m")]
+_health_component = NodePath("../HealthComponent")
+_player_control = NodePath("../PlayerControl")
+_melee_attack_component = NodePath("../MeleeAttackComponent")
+_pick_up_audio_player = NodePath("../../AudioPlayers/UpgradePickUpAudioPlayer")
+
+[node name="PlayerDebugComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_health_component", "_player_control", "_melee_attack_component", "_apply_effect_component") instance=ExtResource("8_fyk2m")]
+_health_component = NodePath("../HealthComponent")
+_player_control = NodePath("../PlayerControl")
+_melee_attack_component = NodePath("../MeleeAttackComponent")
+_apply_effect_component = NodePath("../ApplyEffectComponent")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_v12bg")
 texture = ExtResource("1_orhga")
@@ -103,6 +118,9 @@ _health_component = NodePath("../../ComponentsContainer/HealthComponent")
 
 [node name="AttackedAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers"]
 stream = ExtResource("5_vut02")
+
+[node name="UpgradePickUpAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers"]
+stream = ExtResource("13_cfujg")
 
 [node name="AnimationPlayers" type="Node" parent="."]
 

@@ -22,40 +22,40 @@ init_value_f = 0.0
 wave_rate_i = 1
 wave_rate_f = 0.0
 wave_dependent = true
-drop_chance = 0.5
+drop_chance = 1.0
 metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="Resource" id="Resource_861ij"]
 script = ExtResource("8_861ij")
 upgrade_effect = 1
-init_value_i = 0
+init_value_i = 5
 init_value_f = 0.0
 wave_rate_i = 0
 wave_rate_f = 0.0
 wave_dependent = true
-drop_chance = 0.2
+drop_chance = 1.0
 metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="Resource" id="Resource_aatql"]
 script = ExtResource("8_861ij")
 upgrade_effect = 2
 init_value_i = 0
-init_value_f = 0.0
+init_value_f = 15.0
 wave_rate_i = 0
 wave_rate_f = 0.0
 wave_dependent = true
-drop_chance = 0.3
+drop_chance = 1.0
 metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="Resource" id="Resource_s2ru4"]
 script = ExtResource("8_861ij")
 upgrade_effect = 4
-init_value_i = 0
+init_value_i = 2
 init_value_f = 0.0
 wave_rate_i = 0
 wave_rate_f = 0.0
 wave_dependent = true
-drop_chance = 0.25
+drop_chance = 1.0
 metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4ywm"]
