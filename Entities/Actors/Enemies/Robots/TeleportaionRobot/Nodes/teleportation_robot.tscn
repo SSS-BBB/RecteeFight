@@ -28,12 +28,11 @@ _attack_distance_range_radius = 8.0
 _init_move_speed = 28.0
 _move_speed_range_radius = 7.0
 
-[node name="RobotTeleportComponent" parent="ComponentsContainer" index="5" node_paths=PackedStringArray("_actor_body", "_multiple_rays", "_teleport_audio_player") instance=ExtResource("2_avx2x")]
+[node name="RobotTeleportComponent" parent="ComponentsContainer" index="5" node_paths=PackedStringArray("_actor_body", "_melee_attack_component", "_teleport_audio_player") instance=ExtResource("2_avx2x")]
 _actor_body = NodePath("../..")
-_multiple_rays = NodePath("../../MultipleRays")
+_melee_attack_component = NodePath("../MeleeAttackComponent")
 _teleport_audio_player = NodePath("../../AudioPlayers/TeleportAudioPlayer")
 _teleport_radius_range_radius = 50.0
-_teleport_time_range_radius = 1.0
 
 [node name="Sprite2D" parent="." index="1"]
 material = SubResource("ShaderMaterial_f38qy")

@@ -20,6 +20,8 @@ class_name MeleeAttackComponent extends Node2D
 
 @onready var _punch: Area2D = %Punch
 
+signal finished_attack
+
 var _attack_duration: float
 var _attack_damage: int
 var _attack_distance: float
@@ -64,9 +66,12 @@ func _attack(direction_to_attack: Vector2 = _default_punch_direction) -> void:
 	_tween = get_tree().create_tween()
 	_tween.tween_property(_punch, "position", position_to_attack, _attack_duration/2.0)
 	_tween.tween_property(_punch, "position", Vector2.ZERO, _attack_duration/2.0)
-	_tween.tween_callback(func() -> void: _puncing = false)
+	_tween.tween_callback(_finished_punching)
 	_tween.bind_node(self)
 
+func _finished_punching() -> void:
+	_puncing = false
+	finished_attack.emit()
 
 
 func _on_body_entered_punch_area(body: Node2D) -> void:
@@ -115,6 +120,6 @@ func _on_body_entered_punch_area(body: Node2D) -> void:
 		
 		_tween = get_tree().create_tween()
 		_tween.tween_property(_punch, "position", Vector2.ZERO, _attack_duration/2.0)
-		_tween.tween_callback(func() -> void: _puncing = false)
+		_tween.tween_callback(_finished_punching)
 		_tween.bind_node(self)
 		_tween.play()

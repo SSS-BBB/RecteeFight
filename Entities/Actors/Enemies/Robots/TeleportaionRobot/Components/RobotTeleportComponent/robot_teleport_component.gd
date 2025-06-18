@@ -1,17 +1,14 @@
 class_name RobotTeleportComponent extends Node2D
 
-@onready var _timer: Timer = %Timer
 @onready var _check_intersect_area: Area2D = %CheckIntersectArea
 
 @export var _actor_body: PhysicsBody2D
-@export var _multiple_rays: MultipleRays
+@export var _melee_attack_component: MeleeAttackComponent
 @export var _teleport_audio_player: AudioStreamPlayer2D
 @export var _wave_dependent: bool = false
 @export_group("Teleportation Properties")
 @export var _init_teleport_radius: float = 300.0
-@export var _init_teleport_time: float = 2.5
 @export var _teleport_radius_range_radius: float = 0.0
-@export var _teleport_time_range_radius: float = 0.0
 
 var _teleporting: bool
 var _teleport_radius: float
@@ -24,20 +21,18 @@ func _ready() -> void:
 	_teleport_radius = _init_teleport_radius
 	_teleport_radius = GameManager.randf_radius(_teleport_radius, _teleport_radius_range_radius, 50.0)
 	
-	if not _multiple_rays:
-		push_error("RobotTeleportComponent: _multiple_rays is not initialized. cannot teleport when sees player.")
+	if not _melee_attack_component:
+		push_error("RobotTeleportComponent: _melee_attack_component is not initialized. cannot teleport robot after attacks.")
 		return
 	
-	_multiple_rays.ray_hit_player.connect(_start_teleporting)
+	_melee_attack_component.finished_attack.connect(_start_teleporting)
 
-func _start_teleporting(_player: Player) -> void:
+func _start_teleporting() -> void:
 	if _teleporting:
 		return
 	
 	_teleporting = true
-	var teleport_time: float = GameManager.randf_radius(_init_teleport_time, _teleport_time_range_radius)
-	_timer.wait_time = teleport_time
-	_timer.start()
+	_teleport()
 
 func _teleport() -> void:
 	
