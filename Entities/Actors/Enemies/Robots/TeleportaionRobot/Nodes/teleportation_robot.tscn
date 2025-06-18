@@ -1,9 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://du8q4v52bwyfl"]
+[gd_scene load_steps=8 format=3 uid="uid://du8q4v52bwyfl"]
 
 [ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="1_bpxhg"]
 [ext_resource type="PackedScene" uid="uid://dnlmh1xu2pt48" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/Components/RobotTeleportComponent/robot_teleport_component.tscn" id="2_avx2x"]
 [ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="2_ek0uh"]
+[ext_resource type="Script" uid="uid://dko7pib03fyae" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Components/RobotDestroyedComponent/Resources/drop_chance_resource.gd" id="3_tpo8x"]
 [ext_resource type="AudioStream" uid="uid://dqggko7g4vo4u" path="res://Entities/Actors/Enemies/Robots/TeleportaionRobot/SFXs/robot_teleport.wav" id="4_avx2x"]
+
+[sub_resource type="Resource" id="Resource_tpo8x"]
+script = ExtResource("3_tpo8x")
+upgrade_effect = 3
+init_value_i = 0
+init_value_f = 0.8
+wave_rate_i = 0
+wave_rate_f = 0.0
+wave_dependent = true
+drop_chance = 0.7
+metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f38qy"]
 resource_local_to_scene = true
@@ -34,12 +46,12 @@ _melee_attack_component = NodePath("../MeleeAttackComponent")
 _teleport_audio_player = NodePath("../../AudioPlayers/TeleportAudioPlayer")
 _teleport_radius_range_radius = 50.0
 
+[node name="RobotDestroyedComponent" parent="ComponentsContainer" index="6"]
+_drop_chance_list = Array[ExtResource("3_tpo8x")]([SubResource("Resource_tpo8x")])
+
 [node name="Sprite2D" parent="." index="1"]
 material = SubResource("ShaderMaterial_f38qy")
 region_rect = Rect2(32, 0, 16, 48)
-
-[node name="MultipleRays" parent="." index="3"]
-more_rays = false
 
 [node name="TeleportAudioPlayer" type="AudioStreamPlayer2D" parent="AudioPlayers" index="1"]
 stream = ExtResource("4_avx2x")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bimcpnjtqdnbq"]
+[gd_scene load_steps=23 format=3 uid="uid://bimcpnjtqdnbq"]
 
 [ext_resource type="Texture2D" uid="uid://bl1b7mfhrro7f" path="res://Entities/Actors/Enemies/Robots/robots.png" id="1_32k2u"]
 [ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="2_5uy6p"]
@@ -10,7 +10,53 @@
 [ext_resource type="PackedScene" uid="uid://d1at5tnafygko" path="res://Entities/Actors/Enemies/Components/AttackOnSeeTarget/attack_on_see_target_component.tscn" id="5_b2y2e"]
 [ext_resource type="Script" uid="uid://beujq75q36xqx" path="res://Entities/Actors/Enemies/Robots/BasicRobot/MultipleRays/multiple_rays.gd" id="5_ipkk2"]
 [ext_resource type="Script" uid="uid://cgnonwhrv2h1p" path="res://Entities/Actors/Enemies/Components/MoveToTarget/move_to_target_component.gd" id="6_yl0rw"]
+[ext_resource type="Script" uid="uid://c8ul0ga7vatbu" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Components/RobotDestroyedComponent/robot_destroyed_component.gd" id="7_j4ywm"]
 [ext_resource type="Shader" uid="uid://cqdc1l00nk1gq" path="res://Entities/Actors/HUDs/HitFlash/hit_flash.tres" id="7_l7spv"]
+[ext_resource type="Script" uid="uid://dko7pib03fyae" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Components/RobotDestroyedComponent/Resources/drop_chance_resource.gd" id="8_861ij"]
+
+[sub_resource type="Resource" id="Resource_p823a"]
+script = ExtResource("8_861ij")
+upgrade_effect = 0
+init_value_i = 1
+init_value_f = 0.0
+wave_rate_i = 1
+wave_rate_f = 0.0
+wave_dependent = true
+drop_chance = 0.5
+metadata/_custom_type_script = "uid://dko7pib03fyae"
+
+[sub_resource type="Resource" id="Resource_861ij"]
+script = ExtResource("8_861ij")
+upgrade_effect = 1
+init_value_i = 0
+init_value_f = 0.0
+wave_rate_i = 0
+wave_rate_f = 0.0
+wave_dependent = true
+drop_chance = 0.2
+metadata/_custom_type_script = "uid://dko7pib03fyae"
+
+[sub_resource type="Resource" id="Resource_aatql"]
+script = ExtResource("8_861ij")
+upgrade_effect = 2
+init_value_i = 0
+init_value_f = 0.0
+wave_rate_i = 0
+wave_rate_f = 0.0
+wave_dependent = true
+drop_chance = 0.3
+metadata/_custom_type_script = "uid://dko7pib03fyae"
+
+[sub_resource type="Resource" id="Resource_s2ru4"]
+script = ExtResource("8_861ij")
+upgrade_effect = 4
+init_value_i = 0
+init_value_f = 0.0
+wave_rate_i = 0
+wave_rate_f = 0.0
+wave_dependent = true
+drop_chance = 0.25
+metadata/_custom_type_script = "uid://dko7pib03fyae"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4ywm"]
 resource_local_to_scene = true
@@ -64,7 +110,7 @@ _data = {
 script = ExtResource("2_5uy6p")
 
 [node name="HealthComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_attacked_audio_player", "_animation_on_attacked") instance=ExtResource("2_202fg")]
-_init_max_health = 5
+_init_max_health = 2
 _attacked_audio_player = NodePath("../../AudioPlayers/AttackedAudioPlayer")
 _wave_dependent = true
 _max_health_range_radius = 3
@@ -99,6 +145,12 @@ _knockback_component = NodePath("../KnockbackComponent")
 _wave_dependent = true
 _move_speed_range_radius = 5.0
 
+[node name="RobotDestroyedComponent" type="Node2D" parent="ComponentsContainer" node_paths=PackedStringArray("_actor_body", "_health_component")]
+script = ExtResource("7_j4ywm")
+_actor_body = NodePath("../..")
+_health_component = NodePath("../HealthComponent")
+_drop_chance_list = Array[ExtResource("8_861ij")]([SubResource("Resource_p823a"), SubResource("Resource_861ij"), SubResource("Resource_aatql"), SubResource("Resource_s2ru4")])
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_j4ywm")
 texture = ExtResource("1_32k2u")
@@ -110,7 +162,6 @@ shape = SubResource("RectangleShape2D_jy8ck")
 
 [node name="MultipleRays" type="Node2D" parent="."]
 script = ExtResource("5_ipkk2")
-more_rays = null
 
 [node name="HUDs" type="Control" parent="."]
 layout_mode = 3

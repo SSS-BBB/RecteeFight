@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://blyvvvnmllyl"]
+
+[ext_resource type="Texture2D" uid="uid://bcs5wrahwsu1i" path="res://Entities/Objects/Items/UpgradePotions/Textures/upgrade_potions.png" id="1_nx6k1"]
+[ext_resource type="Script" uid="uid://ccihuoi1637ug" path="res://Entities/Objects/Items/UpgradePotions/Nodes/upgrade_potion.gd" id="1_pjecu"]
+[ext_resource type="Script" uid="uid://c5tb8a0r4r4r5" path="res://Entities/Objects/Items/UpgradePotions/Resources/upgrade_potion_resource.gd" id="2_g7e5y"]
+
+[sub_resource type="Resource" id="Resource_p3e81"]
+script = ExtResource("2_g7e5y")
+size = Vector2i(16, 16)
+cell_position = Vector2i(0, 0)
+effect = 0
+value_i = 0
+value_f = 0.0
+metadata/_custom_type_script = "uid://c5tb8a0r4r4r5"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pjecu"]
+radius = 8.0
+
+[node name="UpgradePotion" type="Area2D"]
+script = ExtResource("1_pjecu")
+_upgrade_potion_resource = SubResource("Resource_p3e81")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = ExtResource("1_nx6k1")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pjecu")

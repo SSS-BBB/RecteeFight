@@ -73,7 +73,7 @@ func rays_target_collider(target_group: String) -> Node2D:
 			continue
 		
 		var colliding: Node2D = ray.get_collider()
-		if colliding.is_in_group(target_group):
+		if colliding and colliding.is_in_group(target_group):
 			# rays hit target
 			return colliding
 	
