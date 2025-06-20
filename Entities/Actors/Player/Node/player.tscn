@@ -67,6 +67,7 @@ script = ExtResource("1_v12bg")
 script = ExtResource("1_hk33a")
 
 [node name="PlayerControl" type="Node2D" parent="ComponentsContainer" node_paths=PackedStringArray("_player_body", "_knockback_component", "_melee_attack_component")]
+unique_name_in_owner = true
 script = ExtResource("2_itdti")
 _player_body = NodePath("../..")
 _knockback_component = NodePath("../KnockbackComponent")
@@ -79,6 +80,7 @@ _animation_on_attacked = NodePath("../../AnimationPlayers/HitFlashAnimationPlaye
 _attacked_animation_name = "hit_flash"
 
 [node name="MeleeAttackComponent" parent="ComponentsContainer" node_paths=PackedStringArray("_component_container") instance=ExtResource("3_vut02")]
+unique_name_in_owner = true
 _target_groups = Array[String](["robot"])
 _component_container = NodePath("..")
 

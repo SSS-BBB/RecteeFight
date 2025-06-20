@@ -64,6 +64,17 @@ func wave_value_upgrade_f(value: float, rate: float) -> float:
 func next_wave() -> void:
 	_current_wave += 1
 	wave_changed.emit()
+	_on_wave_changed()
+
+func set_wave(to_wave: int) -> void:
+	_current_wave = to_wave
+	wave_changed.emit()
+	_on_wave_changed()
+
+func _on_wave_changed() -> void:
+	var message: String = "Current wave is now " + str(_current_wave)
+	print(message)
+	UIManager.show_text(message)
 
 func get_current_wave() -> int:
 	return _current_wave

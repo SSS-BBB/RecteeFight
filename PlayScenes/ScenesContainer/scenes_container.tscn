@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0adk3abjfexk"]
+
+[ext_resource type="PackedScene" uid="uid://be4x6gsh2wcnl" path="res://PlayScenes/GameScenes/World/world.tscn" id="1_s008n"]
+[ext_resource type="PackedScene" uid="uid://c102vemq2fbg6" path="res://PlayScenes/UIScenes/DevConsole/dev_console.tscn" id="2_chpwc"]
+
+[node name="ScenesContainer" type="Node"]
+
+[node name="GameScenes" type="Node2D" parent="."]
+
+[node name="World" parent="GameScenes" instance=ExtResource("1_s008n")]
+
+[node name="UIScenes" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="DevConsole" parent="UIScenes" instance=ExtResource("2_chpwc")]

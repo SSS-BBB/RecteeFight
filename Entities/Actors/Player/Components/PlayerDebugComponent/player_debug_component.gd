@@ -10,6 +10,7 @@ func _ready() -> void:
 		push_error("PlayerDebugComponent: _apply_effect_component is not initialized. cannot see player stats after effects are applied.")
 		return
 	_apply_effect_component.effect_applied.connect(_show_stats)
+	await UIManager.dev_console_added
 	_show_stats()
 
 func _show_stats() -> void:
@@ -32,4 +33,5 @@ func _show_stats() -> void:
 		push_warning("PlayerDebugComponent: _melee_attack_component is not initialized. cannot show player's attack duration and damage.")
 	
 	print("--------------------------------------------------")
+	UIManager.show_player_stats()
 	

@@ -16,26 +16,34 @@ var _direction: Vector2
 func _ready() -> void:
 	_player_speed = _init_player_speed
 	_direction = Vector2(1.0, 0.0)
+	
+	if not _knockback_component:
+		await UIManager.dev_console_added
+		var warning_message: String = "PlayerControl: _knockback_component is not initialized. cannot check if player is being knockbacked."
+		push_warning(warning_message)
+		UIManager.show_warning(warning_message)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("attack"):
 		if _melee_attack_component:
 			_melee_attack_component._attack(_direction)
 		else:
-			push_error("PlayerControl: _melee_attack_component is not initialized in player control. cannot attack.")
+			var error_message: String = "PlayerControl: _melee_attack_component is not initialized in player control. cannot attack."
+			push_error(error_message)
+			UIManager.show_error(error_message)
 
 func _physics_process(_delta: float) -> void:
 	_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	if not _player_body:
-		push_error("PlayerControl: _player_body is not initialized. cannot move.")
+		var error_message: String = "PlayerControl: _player_body is not initialized. cannot move."
+		push_error(error_message)
+		UIManager.show_error(error_message)
 		return
 	
 	if _knockback_component:
 		if _knockback_component.is_knockbacking():
 			return
-	else:
-		push_warning("PlayerControl: _knockback_component is not initialized. cannot check if player is being knockbacked.")
 	
 	_player_body.velocity = _player_speed * _speed_multiplier * _direction
 	_player_body.move_and_slide()
