@@ -40,12 +40,12 @@ var _shooting_direction: Vector2
 
 func _ready() -> void:
 	if _wave_dependent:
-		_damage = _init_damage
-		_bullet_speed = _init_bullet_speed
-		_fire_rate = _init_fire_rate
-		_knockback_force = _init_knockback_force
-		_knockback_decerlation = _init_knockback_decerlation
-		_pause_time_before_shooting = _init_pause_time_before_shooting
+		_damage = GameManager.wave_value_upgrade_i(_init_damage, 2)
+		_bullet_speed = GameManager.wave_value_upgrade_f(_init_bullet_speed, 45.0)
+		_fire_rate = GameManager.wave_value_upgrade_f(_init_fire_rate, -0.02)
+		_knockback_force = GameManager.wave_value_upgrade_f(_init_knockback_force, 10.0)
+		_knockback_decerlation = GameManager.wave_value_upgrade_f(_init_knockback_decerlation, 5.0)
+		_pause_time_before_shooting = GameManager.wave_value_upgrade_f(_init_pause_time_before_shooting, -0.025)
 	else:
 		_damage = _init_damage
 		_bullet_speed = _init_bullet_speed

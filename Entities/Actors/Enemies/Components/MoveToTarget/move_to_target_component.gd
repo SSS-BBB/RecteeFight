@@ -18,9 +18,11 @@ var _target: Node2D
 # Functions
 func _ready() -> void:
 	if _wave_dependent:
-		pass
+		_move_speed = GameManager.wave_value_upgrade_f(_init_move_speed, 2.5)
+	else:
+		_move_speed = _init_move_speed
 	
-	_move_speed = GameManager.randf_radius(_init_move_speed, _move_speed_range_radius)
+	_move_speed = GameManager.randf_radius(_move_speed, _move_speed_range_radius)
 	_target = get_tree().get_first_node_in_group(_target_group_name)
 
 func _physics_process(_delta: float) -> void:

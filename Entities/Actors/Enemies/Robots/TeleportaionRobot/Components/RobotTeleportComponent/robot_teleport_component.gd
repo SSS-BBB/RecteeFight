@@ -15,10 +15,11 @@ var _teleport_radius: float
 
 func _ready() -> void:
 	if _wave_dependent:
-		pass
+		_teleport_radius = GameManager.wave_value_upgrade_f(_init_teleport_radius, 10.0)
+	else:
+		_teleport_radius = _init_teleport_radius
 	
 	_teleporting = false
-	_teleport_radius = _init_teleport_radius
 	_teleport_radius = GameManager.randf_radius(_teleport_radius, _teleport_radius_range_radius, 50.0)
 	
 	if not _melee_attack_component:

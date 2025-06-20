@@ -39,12 +39,17 @@ var _puncing: bool
 # Functions
 func _ready() -> void:
 	if _wave_dependent:
-		# do something
-		pass
+		_attack_duration = GameManager.wave_value_upgrade_f(_init_attack_duration, -0.05)
+		_attack_damage = GameManager.wave_value_upgrade_i(_init_attack_damage, 2)
+		_attack_distance = GameManager.wave_value_upgrade_f(_init_attack_distance, 2.5)
+	else:
+		_attack_duration = _init_attack_duration
+		_attack_damage = _init_attack_damage
+		_attack_distance = _init_attack_distance
 	
-	_attack_duration = GameManager.randf_radius(_init_attack_duration, _attack_duration_range_radius) 
-	_attack_damage = GameManager.randi_radius(_init_attack_damage, _attack_damage_range_radius)
-	_attack_distance = GameManager.randf_radius(_init_attack_distance, _attack_distance_range_radius)
+	_attack_duration = GameManager.randf_radius(_attack_duration, _attack_duration_range_radius) 
+	_attack_damage = GameManager.randi_radius(_attack_damage, _attack_damage_range_radius)
+	_attack_distance = GameManager.randf_radius(_attack_distance, _attack_distance_range_radius)
 	
 	_punch_scale = _init_punch_scale
 	_puncing = false

@@ -1,6 +1,16 @@
 ### GameManager
 extends Node
 
+signal wave_changed
+
+var _current_wave: int
+var _highest_wave: int
+
+func _ready() -> void:
+	# TODO: Load from save
+	_current_wave = 1
+	_highest_wave = _current_wave
+
 # Find Components
 func find_health_component(node: Node2D) -> HealthComponent:
 	for child in node.get_children():
@@ -43,3 +53,20 @@ func randf_radius(center: float, radius: float, minimum: float = 1.0) -> float:
 	
 	var a: float = (center - radius) if center - radius >= minimum else minimum
 	return randf_range(a, center + radius)
+
+# Wave Systems
+func wave_value_upgrade_i(value: int, rate: int) -> int:
+	return value + rate * (_current_wave - 1)
+
+func wave_value_upgrade_f(value: float, rate: float) -> float:
+	return value + rate * (_current_wave - 1.0)
+
+func next_wave() -> void:
+	_current_wave += 1
+	wave_changed.emit()
+
+func get_current_wave() -> int:
+	return _current_wave
+
+func get_highest_wave() -> int:
+	return _highest_wave

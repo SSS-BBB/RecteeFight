@@ -16,7 +16,7 @@ var _teleport_radius: float
 
 func _ready() -> void:
 	if _wave_dependent:
-		_teleport_radius = _init_teleport_radius
+		_teleport_radius = GameManager.wave_value_upgrade_f(_init_teleport_radius, 20.0)
 	else:
 		_teleport_radius = _init_teleport_radius
 	

@@ -23,8 +23,7 @@ signal health_update_failed
 
 func _ready() -> void:
 	if _wave_dependent:
-		_max_health = _init_max_health
-		# do something
+		_max_health = GameManager.wave_value_upgrade_i(_init_max_health, 2)
 	else:
 		_max_health = _init_max_health
 	
