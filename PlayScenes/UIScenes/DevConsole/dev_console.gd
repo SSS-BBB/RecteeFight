@@ -73,6 +73,8 @@ func do_command(command: String) -> bool:
 			push_error(error_message)
 		else:
 			change_wave(argument.to_int())
+	elif actual_command == "kill":
+		kill(argument)
 	else:
 		var error_message: String = actual_command + " command" + " is not implemented."
 		output_error(error_message)
@@ -82,6 +84,48 @@ func do_command(command: String) -> bool:
 
 func change_wave(wave: int) -> void:
 	GameManager.set_wave(wave)
+
+func kill(argument: String) -> void:
+	if argument == "basic_robots":
+		kill_in_container("basic_robot_container")
+	elif argument == "teleport_robots":
+		kill_in_container("teleport_robot_container")
+	elif argument == "shooting_robots":
+		kill_in_container("shooter_robot_container")
+	elif argument == "combined_robots":
+		kill_in_container("combined_robot_container")
+	elif argument == "all":
+		kill_in_container("basic_robot_container")
+		kill_in_container("teleport_robot_container")
+		kill_in_container("shooter_robot_container")
+		kill_in_container("combined_robot_container")
+	else:
+		var error_message: String = "DevConsole: " + argument + " is not implemented to be killed yet."
+		push_error(error_message)
+		output_error(error_message)
+
+func kill_in_container(group: String) -> int:
+	var count: int = 0
+	
+	var container: Node2D = get_tree().get_first_node_in_group(group)
+	if not container:
+		var error_message: String = "DevConsole: cannot find container with group name " + group + ". cannot kill nodes in this container."
+		push_error(error_message)
+		output_error(error_message)
+		return 0
+	
+	for child in container.get_children():
+		var child_health_component: HealthComponent = GameManager.find_health_component(child)
+		if not child_health_component:
+			var warning_message: String = "DevConsole: cannot find health component from " + child.to_string() + ". cannot kill this node."
+			push_warning(warning_message)
+			output_error(warning_message)
+			continue
+		child_health_component.force_die()
+		count += 1
+	
+	output_text("Killed " + str(count) + " in container " + group)
+	return count
 
 # output to console texts
 func output_text(text: String) -> void:

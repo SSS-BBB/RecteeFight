@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxkyjwahq3jf6"]
+
+[ext_resource type="Script" uid="uid://b3nvhs0ul68yg" path="res://CommonComponents/CheckOverlapAreaComponent/check_overlap_component.gd" id="1_4u2rm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qa2xe"]
+resource_local_to_scene = true
+
+[node name="CheckOverlapComponent" type="Area2D"]
+script = ExtResource("1_4u2rm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_qa2xe")

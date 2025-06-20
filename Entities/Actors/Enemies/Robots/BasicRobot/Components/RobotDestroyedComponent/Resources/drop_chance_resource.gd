@@ -10,10 +10,10 @@ class_name DropChanceResource extends Resource
 
 func get_value_i() -> int:
 	if wave_dependent:
-		return init_value_i
+		return GameManager.wave_value_upgrade_i(init_value_i, wave_rate_i)
 	return init_value_i
 
 func get_value_f() -> float:
 	if wave_dependent:
-		return init_value_f
+		return GameManager.wave_value_upgrade_f(init_value_f, wave_rate_f)
 	return init_value_f

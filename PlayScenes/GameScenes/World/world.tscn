@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://be4x6gsh2wcnl"]
+[gd_scene load_steps=16 format=3 uid="uid://be4x6gsh2wcnl"]
 
 [ext_resource type="PackedScene" uid="uid://bhqhk3jr1mjdn" path="res://Entities/Actors/Player/Node/player.tscn" id="1_o7agh"]
 [ext_resource type="PackedScene" uid="uid://bimcpnjtqdnbq" path="res://Entities/Actors/Enemies/Robots/BasicRobot/Nodes/basic_robot.tscn" id="2_6dtal"]
@@ -6,6 +6,59 @@
 [ext_resource type="Script" uid="uid://bpb1y52dummp6" path="res://Utils/Cameras/Components/CameraShakingComponent/camera_shaking_component.gd" id="3_ggw3w"]
 [ext_resource type="Script" uid="uid://0cnspdflab0v" path="res://Utils/Cameras/GameCamera/game_camera.gd" id="3_xi0hx"]
 [ext_resource type="Script" uid="uid://dfpfmomjb6otx" path="res://CommonComponents/ComponentsContainer/components_container.gd" id="4_caqc3"]
+[ext_resource type="Script" uid="uid://clrolwxlhwbiv" path="res://Utils/Spawner/Nodes/spawner.gd" id="7_qa2xe"]
+[ext_resource type="Script" uid="uid://i4chgl7l3cvt" path="res://Utils/Spawner/Resources/enemy_spawn_property_resource.gd" id="8_ioe68"]
+[ext_resource type="PackedScene" uid="uid://dxkyjwahq3jf6" path="res://CommonComponents/CheckOverlapAreaComponent/check_overlap_component.tscn" id="8_y0pof"]
+[ext_resource type="PackedScene" uid="uid://clfctlkx1xmcm" path="res://Entities/Actors/Enemies/Robots/ShootingRobot/Nodes/shooting_robot.tscn" id="9_b2u8i"]
+[ext_resource type="PackedScene" uid="uid://dqvdtncllbs6a" path="res://Entities/Actors/Enemies/Robots/CombinedRobot/Nodes/combined_robot.tscn" id="10_t53rs"]
+
+[sub_resource type="Resource" id="Resource_b2u8i"]
+script = ExtResource("8_ioe68")
+_enemy_scene = ExtResource("2_6dtal")
+_wave_dependent = true
+_enemy_size = Vector2(16, 48)
+_enemy_scale = Vector2(2, 2)
+_init_enemy_amount = 2
+_enemy_increase_per_wave = 0.3
+_spawn_at_wave = 1
+_spawn_to_group = "basic_robot_container"
+metadata/_custom_type_script = "uid://i4chgl7l3cvt"
+
+[sub_resource type="Resource" id="Resource_t53rs"]
+script = ExtResource("8_ioe68")
+_enemy_scene = ExtResource("2_caqc3")
+_wave_dependent = true
+_enemy_size = Vector2(16, 48)
+_enemy_scale = Vector2(2, 2)
+_init_enemy_amount = 0
+_enemy_increase_per_wave = 0.2
+_spawn_at_wave = 2
+_spawn_to_group = "teleport_robot_container"
+metadata/_custom_type_script = "uid://i4chgl7l3cvt"
+
+[sub_resource type="Resource" id="Resource_g32d5"]
+script = ExtResource("8_ioe68")
+_enemy_scene = ExtResource("9_b2u8i")
+_wave_dependent = true
+_enemy_size = Vector2(16, 48)
+_enemy_scale = Vector2(2, 2)
+_init_enemy_amount = 0
+_enemy_increase_per_wave = 0.15
+_spawn_at_wave = 3
+_spawn_to_group = "shooter_robot_container"
+metadata/_custom_type_script = "uid://i4chgl7l3cvt"
+
+[sub_resource type="Resource" id="Resource_y4ea3"]
+script = ExtResource("8_ioe68")
+_enemy_scene = ExtResource("10_t53rs")
+_wave_dependent = true
+_enemy_size = Vector2(16, 48)
+_enemy_scale = Vector2(2, 2)
+_init_enemy_amount = 0
+_enemy_increase_per_wave = 0.1
+_spawn_at_wave = 5
+_spawn_to_group = "combined_robot_container"
+metadata/_custom_type_script = "uid://i4chgl7l3cvt"
 
 [node name="World" type="Node2D"]
 
@@ -19,21 +72,13 @@ scale = Vector2(2, 2)
 
 [node name="Enemies" type="Node2D" parent="Actors"]
 
-[node name="BasicRobots" type="Node2D" parent="Actors/Enemies"]
+[node name="BasicRobots" type="Node2D" parent="Actors/Enemies" groups=["basic_robot_container"]]
 
-[node name="BasicRobot" parent="Actors/Enemies/BasicRobots" instance=ExtResource("2_6dtal")]
-position = Vector2(463, 213)
-scale = Vector2(2, 2)
+[node name="TeleportationRobots" type="Node2D" parent="Actors/Enemies" groups=["teleport_robot_container"]]
 
-[node name="TeleportationRobots" type="Node2D" parent="Actors/Enemies"]
+[node name="ShootingRobots" type="Node2D" parent="Actors/Enemies" groups=["shooter_robot_container"]]
 
-[node name="TeleportationRobot" parent="Actors/Enemies/TeleportationRobots" instance=ExtResource("2_caqc3")]
-position = Vector2(857, 197)
-scale = Vector2(2, 2)
-
-[node name="ShootingRobots" type="Node2D" parent="Actors/Enemies"]
-
-[node name="CombinedRobot" type="Node2D" parent="Actors/Enemies"]
+[node name="CombinedRobot" type="Node2D" parent="Actors/Enemies" groups=["combined_robot_container"]]
 
 [node name="Objects" type="Node2D" parent="."]
 
@@ -56,3 +101,11 @@ script = ExtResource("4_caqc3")
 unique_name_in_owner = true
 script = ExtResource("3_ggw3w")
 camera = NodePath("../..")
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("7_qa2xe")
+_enemy_to_spawn = Array[ExtResource("8_ioe68")]([SubResource("Resource_b2u8i"), SubResource("Resource_t53rs"), SubResource("Resource_g32d5"), SubResource("Resource_y4ea3")])
+
+[node name="CheckOverlapComponent" parent="Spawner" node_paths=PackedStringArray("_parent_node") instance=ExtResource("8_y0pof")]
+unique_name_in_owner = true
+_parent_node = NodePath("..")
